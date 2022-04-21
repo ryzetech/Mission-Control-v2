@@ -60,12 +60,14 @@ module.exports = {
     const img = sol_json.photos[sol_json.photos.length - 1].img_src;
 
     // send
-    await interaction.reply({ embeds: [
-      new MessageEmbed()
-        .setColor("#0b3d91")
-        .setAuthor({ name: "NASA Rover", url: "https://api.nasa.gov/", iconURL: "https://botdata.ryzetech.live/perma/NASA.png" })
-        .setTitle(`Curiosity ${cam.toUpperCase()} @ SOL ${sol} | ${date}`)
-        .setImage(img),
-    ] });
+    await interaction.reply({
+      embeds: [
+        new MessageEmbed()
+          .setColor("#0b3d91")
+          .setAuthor({ name: "NASA Rover", url: "https://api.nasa.gov/", iconURL: "https://botdata.ryzetech.live/perma/NASA.png" })
+          .setTitle(`Curiosity ${cam.toUpperCase()} @ SOL ${sol} | ${date}`)
+          .setImage(img),
+      ],
+    });
   },
 };

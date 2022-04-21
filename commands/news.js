@@ -4,9 +4,9 @@ const fetch = require("node-fetch");
 
 module.exports = {
   data:
-  new SlashCommandBuilder()
-    .setName("news")
-    .setDescription("Freshly served yCombinator news!"),
+    new SlashCommandBuilder()
+      .setName("news")
+      .setDescription("Freshly served yCombinator news!"),
   async execute(interaction) {
     await interaction.defer();
 
@@ -23,9 +23,9 @@ module.exports = {
 
       // construct link
       const link =
-      "https://hacker-news.firebaseio.com/v0/item/" +
-      encodeURIComponent(json[i]) +
-      ".json";
+        "https://hacker-news.firebaseio.com/v0/item/" +
+        encodeURIComponent(json[i]) +
+        ".json";
 
       // fetch data and parse
       data = await fetch(link);
@@ -39,12 +39,14 @@ module.exports = {
       i++;
     }
 
-    await interaction.editReply({ embeds: [
-      new MessageEmbed()
-        .setAuthor({ auhtor: "HackerNews", url: "https://news.ycombinator.com/", iconURL: "https://botdata.ryzetech.live/perma/ycomb.png" })
-        .setTitle("Top Stories")
-        .addFields(fields)
-        .setTimestamp(),
-    ] });
+    await interaction.editReply({
+      embeds: [
+        new MessageEmbed()
+          .setAuthor({ auhtor: "HackerNews", url: "https://news.ycombinator.com/", iconURL: "https://botdata.ryzetech.live/perma/ycomb.png" })
+          .setTitle("Top Stories")
+          .addFields(fields)
+          .setTimestamp(),
+      ],
+    });
   },
 };

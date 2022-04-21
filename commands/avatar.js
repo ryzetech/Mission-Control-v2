@@ -4,15 +4,17 @@ const { MessageEmbed } = require("discord.js");
 
 module.exports = {
   data:
-  new SlashCommandBuilder()
-    .setName("avatar")
-    .setDescription("Gets your or someone else's avatar picture or gif"),
+    new SlashCommandBuilder()
+      .setName("avatar")
+      .setDescription("Gets your or someone else's avatar picture or gif"),
   async execute(interaction) {
     const usrPFP = interaction.user.displayAvatarURL({ animated: true });
-    await interaction.reply({ embeds: [
-      new MessageEmbed()
-        .setTitle(interaction.user.username + "'s Avatar")
-        .setImage(usrPFP),
-    ] });
+    await interaction.reply({
+      embeds: [
+        new MessageEmbed()
+          .setTitle(interaction.user.username + "'s Avatar")
+          .setImage(usrPFP),
+      ],
+    });
   },
 };

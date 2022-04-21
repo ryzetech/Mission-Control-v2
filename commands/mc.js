@@ -67,16 +67,18 @@ module.exports = {
         await interaction.reply({ embeds: [embed] });
       }
       else {
-        await interaction.reply({ embeds: [
-          new MessageEmbed()
-            .setAuthor({ name: "MC Fetch", iconURL: "https://botdata.ryzetech.live/perma/grassblock.png" })
-            .setTitle("❌ An error occured! :(")
-            .setDescription("Error Message: *" + json.error + "*"),
-        ] });
+        await interaction.reply({
+          embeds: [
+            new MessageEmbed()
+              .setAuthor({ name: "MC Fetch", iconURL: "https://botdata.ryzetech.live/perma/grassblock.png" })
+              .setTitle("❌ An error occured! :(")
+              .setDescription("Error Message: *" + json.error + "*"),
+          ],
+        });
       }
     }
     catch {
-    // lol
+      // lol
     }
   },
 };
