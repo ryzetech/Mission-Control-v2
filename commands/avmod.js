@@ -32,6 +32,8 @@ module.exports = {
                 ["Simpcard", "simpcard"],
                 ["Horny License", "horny"],
                 ["GTA Mission passed", "passed"],
+                ["TRIGGERED", "triggered"],
+                ["Lolice", "lolice"],
               ],
             },
           );
