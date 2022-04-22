@@ -2,8 +2,6 @@ const { SlashCommandBuilder } = require("@discordjs/builders");
 const { MessageEmbed } = require("discord.js");
 const fetch = require("node-fetch");
 
-const { nasa_auth } = require("../token.json");
-
 module.exports = {
   data:
     new SlashCommandBuilder()
@@ -28,13 +26,27 @@ module.exports = {
             },
           );
       }),
-  async execute(interaction) {
+  async execute(interaction, auth, botCache) {
+    await interaction.defer();
+
     // get option thing
     const cam = await interaction.options.getString("camera");
 
-    // get rover manifests
-    const manifest_res = await fetch(`https://api.nasa.gov/mars-photos/api/v1/manifests/curiosity?api_key=${nasa_auth}`);
-    const manifest_json = await manifest_res.json();
+    // get rover manifest
+    let manifest_json = botCache.get("nasa-manifest-curiosity");
+
+    // if the manifest has not been cached yet:
+    if (!manifest_json) {
+      const manifest_res = await fetch(`https://api.nasa.gov/mars-photos/api/v1/manifests/curiosity?api_key=${auth.nasa_auth}`);
+      manifest_json = await manifest_res.json();
+
+      // set cache                                                     TTL   h    s   = 1h
+      const success = botCache.set("nasa-manifest-curiosity", manifest_json, 60 * 60);
+
+      if (!success) {
+        console.error("Failed to cache rover manifest.");
+      }
+    }
 
     // reverse the camera list so the first one is the default
     const cam_data = manifest_json.photo_manifest.photos.reverse();
@@ -53,7 +65,7 @@ module.exports = {
     }
 
     // resolve sol data
-    const sol_res = await fetch(`https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=${sol}&camera=${cam}&api_key=${nasa_auth}`);
+    const sol_res = await fetch(`https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=${sol}&camera=${cam}&api_key=${auth.nasa_auth}`);
     const sol_json = await sol_res.json();
 
     // get last image
