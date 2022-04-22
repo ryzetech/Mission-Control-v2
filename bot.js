@@ -38,8 +38,10 @@
 
 // load shit in
 const { Client, Intents, Collection } = require("discord.js");
-const { token } = require("./token.json");
+const auth = require("./token.json");
 const fs = require("node:fs");
+const NodeCache = require("node-cache");
+const cache = new NodeCache();
 
 // why the fuck do we have to do this tho? discord explain!
 const botcli = new Client({ intents: [Intents.FLAGS.GUILDS] });
@@ -70,7 +72,7 @@ botcli.on("interactionCreate", async interaction => {
 
   // executes the command and return an error message if it fails
   // FIXME: THIS IS THE MOST BASIC ERROR HANDLING SHIT I'VE EVER WRITTEN, MAKE IT BETTER
-  try { await command.execute(interaction); }
+  try { await command.execute(interaction, auth, cache); }
   catch (runerror) {
     try {
       await interaction.editReply({ content: `There was an error while I executed the command! This might be helpful: \`\`\`${runerror}\`\`\``, ephemeral: true });
@@ -82,4 +84,4 @@ botcli.on("interactionCreate", async interaction => {
 });
 
 // launch this shit
-botcli.login(token);
+botcli.login(auth.token);
