@@ -1,8 +1,10 @@
 {
   "dependencies": {
+    "axios": "^0.26.1",
     "discord.js": "^13.6.0",
     "eslint": "^8.12.0",
     "node-cache": "^5.1.2",
-    "prisma": "^3.12.0"
+    "prisma": "^3.12.0",
+    "xml2js": "^0.4.23"
   }
 }
