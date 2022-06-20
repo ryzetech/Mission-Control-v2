@@ -15,14 +15,17 @@ module.exports = {
           .setRequired(true);
       }),
   async execute(interaction) {
+    // why do we even try?
+    // life is meaningless
     try {
       const uname = interaction.options.getString("username");
 
       const res = await fetch("https://some-random-api.ml/mc?username=" + encodeURIComponent(uname));
       const json = await res.json();
 
+      // let's hope there isn't an error ok
       if (!json.error) {
-
+        // construct a basic embed with craftatar renders
         const embed = new MessageEmbed()
           .setAuthor({ name: "MC Fetch", iconURL: "https://botdata.ryzetech.live/perma/grassblock.png" })
           .setTitle(json.username)
@@ -32,6 +35,9 @@ module.exports = {
         let namelist;
 
         if (json.name_history.length > 25) {
+          // now we have a problem
+          // the change list is so big that it doesn't fit into fields anymore
+          // trying to put it in the description instead
           namelist = "\n";
 
           for (const i in json.name_history) {
@@ -54,6 +60,7 @@ module.exports = {
           }
         }
         else {
+          // the default: put it into embed fields
           for (const i in json.name_history) {
             const name = json.name_history[i].name;
             const date = json.name_history[i].changedToAt;
@@ -79,6 +86,7 @@ module.exports = {
     }
     catch {
       // lol
+      // TODO: i should handle errors tbh
     }
   },
 };

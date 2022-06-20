@@ -40,3 +40,6 @@ module.exports = {
     await interaction.reply({ embeds: [embed] });
   },
 };
+
+// honestly, i dont think that this needs comments
+// the code is documentation enough

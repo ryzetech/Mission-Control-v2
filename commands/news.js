@@ -8,10 +8,17 @@ module.exports = {
       .setName("news")
       .setDescription("Freshly served yCombinator news!"),
   async execute(interaction, _auth, botCache) {
+    // defering here is absolutely crucial
+    // the endpoint often needs several seconds to process the sheer amount of stories
+    // seriously yComb, what the fuck? stop using firebase
     await interaction.defer();
 
+    // try to cache the news manifest
+    // fun fact: this actually hasn't to do with rate limiting since there is no such rate limit
+    // it has rather to do with the long waiting time
     let news = await botCache.get("news");
 
+    // get the news to cache them
     if (!news) {
       const res = await fetch(
         "https://hacker-news.firebaseio.com/v0/topstories.json",
@@ -20,7 +27,8 @@ module.exports = {
 
       news = json;
 
-      const success = botCache.set("news", json, 2 * 60 * 60);
+      // cache the news manifest             TTL  m    s
+      const success = botCache.set("news", json, 30 * 60);
 
       if (!success) {
         console.error("Failed to cache news.");
@@ -31,8 +39,10 @@ module.exports = {
     let i = 0;
     const fields = [];
 
+    // get the first five stories
     while (i < 5) {
-      let data = botCache.get(`news_${i}`);
+      // check if the story is cached by id
+      let data = botCache.get(`news_${news[i]}`);
 
       if (!data) {
         // construct link
@@ -45,7 +55,9 @@ module.exports = {
         data = await fetch(link);
         data = await data.json();
 
-        const success = botCache.set(`news_${i}`, data, 60 * 60);
+        // the stories have a long lifetime since they are unlikely to be changed
+        //                                                TTL h    m    s
+        const success = botCache.set(`news_${news[i]}`, data, 4 * 60 * 60);
 
         if (!success) {
           console.error("Failed to cache news article.");
@@ -53,6 +65,7 @@ module.exports = {
         }
       }
 
+      // continue without increment if the story doesn't have a url
       if (!data.url) continue;
       const url = "[**Link**](" + data.url + ")\n";
 

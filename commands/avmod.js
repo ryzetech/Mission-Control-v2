@@ -13,6 +13,7 @@ module.exports = {
           .setRequired(true)
           .addChoices(
             {
+              // bo burnham: what.
               choices: [
                 ["Glass", "glass"],
                 ["GTA Wasted", "wasted"],
@@ -50,6 +51,7 @@ module.exports = {
     const filter = interaction.getString("filter");
     const usr = interaction.getUser("user");
 
+    // construct a basic embed
     const msg = new MessageEmbed()
       .setTitle(`${usr.user.tag}' Avatar`)
       .setDescription(`Modifier: ${filter.toUpperCase()}`)
@@ -59,6 +61,7 @@ module.exports = {
         )}`,
       );
 
+    // this handling is weird and ugly, but i doubt that there are better ways to do it
     if (["triggered", "lolice"].includes(filter)) {
       const attachment = new MessageAttachment(
         `https://some-random-api.ml/canvas/${filter}/?avatar=${usr.user.displayAvatarURL(
@@ -67,6 +70,8 @@ module.exports = {
         "att.gif",
       );
 
+      // ATTATCHMENTS WOOOO
+      // EASILY THE WORST THING ABOUT DISCORD
       msg.setImage("attatchment://att.gif");
 
       await interaction.editReply({ embeds: [msg], files: [attachment] });
