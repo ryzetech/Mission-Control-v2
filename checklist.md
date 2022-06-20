@@ -1,0 +1,22 @@
+- [ ] welcome message
+- [ ] virginslayer integration
+- [ ] economy system
+  - [ ] work
+  - [ ] balance
+  - [ ] send
+  - [ ] leaderboard
+  - [ ] coinflip
+  - [ ] eth
+- [ ] message watcher (activity => coins)
+- [ ] ping
+- [ ] info
+- [x] avatar get
+- [x] avmod
+- [x] animal
+- [x] pokedex
+- [x] mc
+- [x] news
+- [x] spacex
+- [x] apod
+- [x] rover
+- [ ] wolfram
